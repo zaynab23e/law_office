@@ -50,7 +50,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::delete('/case-category/{category}', [CaseCategryController::class, 'destroy']);
 
         //Case routes
-      Route::prefix('/customer/{customer}')->group(function () {
+        Route::prefix('/customer/{customer}')->group(function () {
         Route::get('/cases', [CaseController::class, 'index']);
         Route::get('/case/{case}', [CaseController::class, 'show']);
         Route::post('/store-case', [CaseController::class, 'store']);
@@ -84,11 +84,11 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::post('/store-expense', [CaseExpenseController::class, 'store']);
         Route::post('/update-expense/{expense}', [CaseExpenseController::class, 'update']);
         Route::delete('/expense/{expense}', [CaseExpenseController::class, 'destroy']);
-               
-     });
+
+});
 });
 
-       
+
         //getting routes
         Route::get('/sessions', [GettingController::class, 'getAllSessions']);
         Route::get('/payments', [GettingController::class, 'getAllPayments']);
@@ -110,7 +110,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         //Home routes
         Route::get('/home', [HomeController::class, 'index']);
         Route::get('/session-dates', [HomeController::class, 'sessionDates']);
-  
+
 });
 Route::prefix('/admin')->group(function () {
     Route::post('/register', [AdminsAuthController::class, 'register']);

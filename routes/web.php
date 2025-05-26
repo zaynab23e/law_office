@@ -6,6 +6,9 @@ use App\Http\Controllers\Admin\SessionController;
 use App\Http\Controllers\Admin\ExpensesController;
 use App\Http\Controllers\Admin\IssueController;
 use App\Http\Controllers\Admin\AttachmentController;
+use App\Http\Controllers\Admin\CaseCategoryController;
+
+
 use Illuminate\Support\Facades\Route;
 
 
@@ -53,8 +56,7 @@ Route::get('/issues/{id}/edit', [IssueController::class, 'edit'])->name('offices
 Route::put('/issues/{id}/update', [IssueController::class, 'update'])->name('offices.issue.update');
 Route::delete('/issues/{id}', [IssueController::class, 'delete'])->name('offices.issue.delete');
 Route::get('/issues/{id}', [IssueController::class, 'show'])->name('offices.issue.show');
-
-
+Route::get('/issues/category/{category}', [IssueController::class, 'showByCategory'])->name('offices.issue.byCategory');
 
 
     // Attachment
@@ -66,7 +68,4 @@ Route::get('/issues/{id}', [IssueController::class, 'show'])->name('offices.issu
     Route::put('/attachments/{id}/update', [AttachmentController::class, 'update'])->name('offices.attachments.update');
     Route::get('/attachments/{id}', [AttachmentController::class, 'show'])->name('offices.attachments.show');
 
-    
-    
-    
 });

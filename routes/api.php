@@ -2,7 +2,11 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\AuthController as Admin;
+use App\Http\Controllers\API\Admin\AdminsAuthController;
+use App\Http\Controllers\API\Admin\AttachmentController as AdminAttachmentController;
+use App\Http\Controllers\API\Admin\IssueController as AdminIssueController;
+use App\Http\Controllers\API\Admin\ExpensesController as AdminExpensesController;
+use App\Http\Controllers\API\Admin\SessionController as AdminSessionController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\CaseCategryController;
 use App\Http\Controllers\API\CaseController;
@@ -107,4 +111,42 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::get('/session-dates', [HomeController::class, 'sessionDates']);
   
 });
-Route::post('/register-admin', [Admin::class, 'register']);
+Route::prefix('/admin')->group(function () {
+    Route::post('/register', [AdminsAuthController::class, 'register']);
+    Route::post('/login', [AdminsAuthController::class, 'login']);
+});
+
+Route::prefix('/admin')->middleware('auth:admin')->group(function () {
+
+    #Attachments
+    Route::get('/attachments', [AdminAttachmentController::class, 'attachment'])->name('offices.attachments');
+    Route::post('/attachments/store', [AdminAttachmentController::class, 'store'])->name('offices.attachments.store');
+    Route::get('/attachments/{id}', [AdminAttachmentController::class, 'show'])->name('offices.attachments.show');  
+    Route::post('/attachments/{id}', [AdminAttachmentController::class, 'update'])->name('offices.attachments.update');
+    Route::delete('/attachments/{id}', [AdminAttachmentController::class, 'destroy'])->name('offices.attachments.destroy');
+
+    #Issues
+    Route::get('/issue', [AdminIssueController::class, 'issue'])->name('offices.issue');
+    Route::post('/issue/store', [AdminIssueController::class, 'store'])->name('offices.issue.store');
+    Route::get('/issue/{id}', [AdminIssueController::class, 'show'])->name('offices.issue.show');
+    Route::post('/issue/{id}', [AdminIssueController::class, 'update'])->name('offices.issue.update');
+    Route::delete('/issue/{id}', [AdminIssueController::class, 'delete'])->name('offices.issue.destroy');
+
+    #Expenses
+    Route::get('/expenses', [AdminExpensesController::class, 'index'])->name('offices.expenses');
+    Route::post('/expenses/store', [AdminExpensesController::class, 'store'])->name('offices.expenses.store');
+    Route::get('/expenses/{id}', [AdminExpensesController::class, 'show'])->name('offices.expenses.show');
+    Route::post('/expenses/{id}', [AdminExpensesController::class, 'update'])->name('offices.expenses.update');
+    Route::delete('/expenses/{id}', [AdminExpensesController::class, 'destroy'])->name('offices.expenses.destroy');
+
+    #sessions
+    Route::get('/sessions', [AdminSessionController::class, 'session'])->name('offices.sessions');
+    Route::post('/sessions/store', [AdminSessionController::class, 'storeSession'])->name('offices.sessions.store');
+    Route::get('/sessions/{id}', [AdminSessionController::class, 'showSession'])->name('offices.sessions.show');
+    Route::post('/sessions/{id}', [AdminSessionController::class, 'updateSession'])->name('offices.sessions.update');
+    Route::delete('/sessions/{id}', [AdminSessionController::class, 'deleteSession'])->name('offices.sessions.destroy');
+
+    Route::post('/logout', [AdminsAuthController::class, 'logout']);
+
+});
+    // Admin routes

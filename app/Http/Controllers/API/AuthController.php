@@ -28,8 +28,11 @@ class AuthController extends Controller
         }
         $user = User::create($validatedData);     
         $user->save();
-        return response()->json([ 
-            'message' => ' تم التسجيل بنجاح ، برجاء الانتظار حتي يتم قبول طلب سيادتكم.'
+        $token = $user->createToken('Api token of ' . $user->name)->plainTextToken;
+
+        return response()->json([
+            'user' => $user->only(['id', 'name', 'email']),
+            'token' => $token
         ], 201);
     }
 

@@ -57,11 +57,11 @@ Route::get('/issues/{id}', [IssueController::class, 'show'])->name('offices.issu
 
 
 
-// Attachment
-Route::get('/attachments', [AttachmentController::class, 'attachment'])->name('offices.attachments');
-Route::get('/attachments/create', [AttachmentController::class, 'create'])->name('offices.attachments.create');
-Route::post('/attachments/store', [AttachmentController::class, 'store'])->name('offices.attachments.store');
-Route::delete('/attachments/{id}', [AttachmentController::class, 'destroy'])->name('offices.attachments.destroy');
+    // Attachment
+    Route::get('/attachments', [AttachmentController::class, 'attachment'])->name('offices.attachments');
+    Route::get('/attachments/create', [AttachmentController::class, 'create'])->name('offices.attachments.create');
+    Route::post('/attachments/store', [AttachmentController::class, 'store'])->name('offices.attachments.store');
+    Route::delete('/attachments/{id}', [AttachmentController::class, 'destroy'])->name('offices.attachments.destroy');
     Route::get('/attachments/{id}/edit', [AttachmentController::class, 'edit'])->name('offices.attachments.edit');
     Route::put('/attachments/{id}/update', [AttachmentController::class, 'update'])->name('offices.attachments.update');
     Route::get('/attachments/{id}', [AttachmentController::class, 'show'])->name('offices.attachments.show');

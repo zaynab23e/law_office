@@ -68,8 +68,4 @@ Route::delete('/attachments/{id}', [AttachmentController::class, 'destroy'])->na
     Route::put('/attachments/{id}/update', [AttachmentController::class, 'update'])->name('offices.attachments.update');
     Route::get('/attachments/{id}', [AttachmentController::class, 'show'])->name('offices.attachments.show');
 
-    
-
-
-  
 });

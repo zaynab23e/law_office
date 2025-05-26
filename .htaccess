@@ -1,0 +1,38 @@
+# <IfModule mod_rewrite.c>
+# RewriteEngine On
+# RewriteRule ^(.*)$ public/$1 [L]
+# </IfModule>
+
+# # php -- BEGIN cPanel-generated handler, do not edit
+# # Set the “ea-php82” package as the default “PHP” programming language.
+# <IfModule mime_module>
+#   AddHandler application/x-httpd-ea-php82 .php .php8 .phtml
+# </IfModule>
+
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    # حل مشكلة الشرطة المائلة الأساسية
+    RewriteBase /
+    # تعطيل التعامل مع الروابط الرمزية (Symbolic Links)
+    Options +FollowSymLinks
+    # إعادة التوجيه الآمن للمجلد public/
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
+
+# إعدادات PHP الآمنة
+<IfModule mime_module>
+    # تحديد إصدار PHP (جرب تغيير 82 إلى 80 إذا استمرت المشكلة)
+    AddHandler application/x-httpd-ea-php82___lsphp .php .php8 .phtml
+    # زيادة وقت التنفيذ للطلبات المعقدة
+    php_value max_execution_time 300
+    # زيادة حجم الذاكرة
+    php_value memory_limit 256M
+</IfModule>
+
+# منع الوصول المباشر لملفات النظام
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>

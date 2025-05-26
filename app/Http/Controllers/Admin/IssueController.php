@@ -37,7 +37,7 @@ public function issue()
         $issue->remaining_amount = ($issue->contract_price ?? 0) - $issue->paid_amount;
     }
 
-    return view('tap.issue', compact('issues'));
+    return view('tap.issue.issue', compact('issues'));
 }
 
     public function create()
@@ -45,7 +45,7 @@ public function issue()
         $customers = Customer::orderBy('name')->get();
         $categories = CaseCategory::orderBy('name')->get();
         
-        return view('tap.createIssue', compact('customers', 'categories'));
+        return view('tap.issue.createIssue', compact('customers', 'categories'));
     }
 
     /**
@@ -158,4 +158,23 @@ public function issue()
                     
         return view('tap.showIssue', compact('issue'));
     }
+
+
+public function showByCategory($category)
+{
+
+    $category = urldecode($category);
+
+    $issues = Issue::whereHas('category', function($q) use ($category) {
+        $q->where('name', $category);
+    })->get();
+
+    if ($issues->isEmpty()) {
+
+    }
+
+    return view('tap.issue.byCategory', compact('issues', 'category'));
+}
+
+
 }

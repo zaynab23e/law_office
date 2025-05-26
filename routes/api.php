@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\Admin\AdminsAuthController;
 use App\Http\Controllers\API\Admin\AttachmentController as AdminAttachmentController;
+use App\Http\Controllers\API\Admin\DashboardController;
 use App\Http\Controllers\API\Admin\IssueController as AdminIssueController;
 use App\Http\Controllers\API\Admin\ExpensesController as AdminExpensesController;
 use App\Http\Controllers\API\Admin\SessionController as AdminSessionController;
@@ -117,6 +118,13 @@ Route::prefix('/admin')->group(function () {
 });
 
 Route::prefix('/admin')->middleware('auth:admin')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+    Route::get('/offices', [DashboardController::class, 'loadOffices'])->name('offices.index');
+    Route::get('/offices/{id}', [DashboardController::class, 'loadOffice'])->name('offices.show');
+    Route::delete('/offices/{id}', [DashboardController::class, 'deleteOffice'])->name('offices.delete');
+    Route::post('/offices/approve/{id}', [DashboardController::class, 'approveUser'])->name('offices.approve');
+    Route::delete('/offices/reject/{id}', [DashboardController::class, 'rejectUser'])->name('offices.reject');
+
 
     #Attachments
     Route::get('/attachments', [AdminAttachmentController::class, 'attachment'])->name('offices.attachments');

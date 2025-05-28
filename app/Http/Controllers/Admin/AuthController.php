@@ -42,10 +42,22 @@ class AuthController extends Controller
 
         return back()->withErrors(['error' => 'بيانات غير صحيحة'])->withInput();
     }
+public function logout(Request $request)
+{
+    // لو اليوزر متصل عبر API (عنده توكن)
+    if ($request->user() && $request->user()->token()) {
+        // حذف التوكن الحالي للـ API
+        $request->user()->currentAccessToken()->delete();
 
-    public function logout(Request $request)
-    {
-        Auth::logout();
-        return redirect()->route('loginPage')->with('success', 'تم تسجيل الخروج بنجاح');
+        return response()->json(['message' => 'تم تسجيل الخروج بنجاح']);
     }
+
+    // لو الجلسة موجودة (ويب)
+    Auth::guard('admin')->logout();
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+
+    return redirect()->route('loginPage')->with('success', 'تم تسجيل الخروج بنجاح');
+}
+
 }

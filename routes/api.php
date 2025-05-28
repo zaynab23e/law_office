@@ -116,7 +116,7 @@ Route::prefix('/admin')->group(function () {
     Route::post('/login', [AdminsAuthController::class, 'login']);
 });
 
-Route::prefix('/admin')->middleware('auth:admin-api')->group(function () {
+Route::prefix('/admin')->middleware('auth:admin')->group(function () {
 
     #Attachments
     Route::get('/attachments', [AdminAttachmentController::class, 'attachment'])->name('offices.attachments');

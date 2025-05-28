@@ -116,7 +116,7 @@ Route::prefix('/admin')->group(function () {
     Route::post('/login', [AdminsAuthController::class, 'login']);
 });
 
-Route::prefix('/admin')->middleware('auth:admin')->group(function () {
+Route::prefix('/admin')->middleware('auth:admin-api')->group(function () {
 
     #Attachments
     Route::get('/attachments', [AdminAttachmentController::class, 'attachment'])->name('offices.attachments');
@@ -125,7 +125,7 @@ Route::prefix('/admin')->middleware('auth:admin')->group(function () {
     Route::post('/attachments/{id}', [AdminAttachmentController::class, 'update'])->name('offices.attachments.update');
     Route::delete('/attachments/{id}', [AdminAttachmentController::class, 'destroy'])->name('offices.attachments.destroy');
 
-    #Issues
+    #Issues 
     Route::get('/issue', [AdminIssueController::class, 'issue'])->name('offices.issue');
     Route::post('/issue/store', [AdminIssueController::class, 'store'])->name('offices.issue.store');
     Route::get('/issue/{id}', [AdminIssueController::class, 'show'])->name('offices.issue.show');

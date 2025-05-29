@@ -112,7 +112,7 @@ Route::group(['middleware' => 'auth:sanctum'], function ()
         Route::get('/home', [HomeController::class, 'index']);
         Route::get('/session-dates', [HomeController::class, 'sessionDates']);
 
-   });
+  });
 Route::prefix('/admin')->group(function () {
     Route::post('/register', [AdminsAuthController::class, 'register']);
     Route::post('/login', [AdminsAuthController::class, 'login']);

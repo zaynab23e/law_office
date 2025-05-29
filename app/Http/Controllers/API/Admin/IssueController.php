@@ -43,6 +43,7 @@ public function issue()
     /**
      * حفظ القضية الجديدة في قاعدة البيانات
      */
+    
     public function store(Request $request)
     {
         $validated = $request->validate([

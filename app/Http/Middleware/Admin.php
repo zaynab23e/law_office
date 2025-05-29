@@ -15,15 +15,15 @@ class Admin
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
-{
-    $admin = Auth::guard('admin')->user();
-    
-    if (!$admin) {
-        logger('Admin middleware: No authenticated admin.');
-        return response()->json(['message' => 'Unauthorized: Only admins can access this route'], 403);
-    }
+    public function handle(Request $request, Closure $next)
+    {
+        $admin = Auth::guard('admin')->user();
 
+        if (!$admin || $admin->id !== 1) {
+            return response()->json(['message' => 'Unauthorized: Super admin only'], 403);
+        }
+
+    
     logger('Admin middleware: Admin authenticated.', ['admin' => $admin]);
     return $next($request);
 }

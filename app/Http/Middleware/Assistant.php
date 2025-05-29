@@ -4,11 +4,10 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 
-
-class Admin
+class Assistant
 {
     /**
      * Handle an incoming request.
@@ -18,14 +17,13 @@ class Admin
     public function handle(Request $request, Closure $next): Response
     {
         $admin = Auth::guard('admin')->user();
-        
-        if (!$admin || !$admin->role || $admin->role !== 'admin') {
+
+        if (!$admin || !$admin->role || $admin->role !== 'Assistant') {
             logger('Admin middleware: No authenticated admin.');
-            return response()->json(['message' => 'Unauthorized: Only admins can access this route'], 403);
+            return response()->json(['message' => 'Unauthorized: Only assistants can access this route'], 403);
         }
 
         logger('Admin middleware: Admin authenticated.', ['admin' => $admin]);
         return $next($request);
     }
-
 }

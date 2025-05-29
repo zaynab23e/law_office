@@ -29,7 +29,8 @@ Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
 Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 
 //////////////////////////  User Private Routes  //////////////////////////
-Route::group(['middleware' => 'auth:sanctum'], function () {
+Route::group(['middleware' => 'auth:sanctum'], function ()
+    {
         Route::post('/logout', [AuthController::class, 'logout']);
 
         //Customer category routes
@@ -51,42 +52,42 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
         //Case routes
         Route::prefix('/customer/{customer}')->group(function () {
-        Route::get('/cases', [CaseController::class, 'index']);
-        Route::get('/case/{case}', [CaseController::class, 'show']);
-        Route::post('/store-case', [CaseController::class, 'store']);
-        Route::post('/update-case/{case}', [CaseController::class, 'update']);
-        Route::delete('/case/{case}', [CaseController::class, 'destroy']);
-        
-        // Attachment routes
-        Route::prefix('/case/{case}')->group(function () {
-        Route::get('/attachments', [AttachmentController::class, 'index']);
-        Route::get('/attachment/{attachment}', [AttachmentController::class, 'show']);
-        Route::post('/store-attachment', [AttachmentController::class, 'store']);
-        Route::post('/update-attachment/{attachment}', [AttachmentController::class, 'update']);
-        Route::delete('/attachment/{attachment}', [AttachmentController::class, 'destroy']);
-        // Session routes
-        Route::get('/sessions', [SessionController::class, 'index']);
-        Route::get('/session/{session}', [SessionController::class, 'show']);
-        Route::post('/store-session', [SessionController::class, 'store']);
-        Route::post('/update-session/{session}', [SessionController::class, 'update']);
-        Route::delete('/session/{session}', [SessionController::class, 'destroy']);
+            Route::get('/cases', [CaseController::class, 'index']);
+            Route::get('/case/{case}', [CaseController::class, 'show']);
+            Route::post('/store-case', [CaseController::class, 'store']);
+            Route::post('/update-case/{case}', [CaseController::class, 'update']);
+            Route::delete('/case/{case}', [CaseController::class, 'destroy']);
+            
+            // Attachment routes
+            Route::prefix('/case/{case}')->group(function () {
+                Route::get('/attachments', [AttachmentController::class, 'index']);
+                Route::get('/attachment/{attachment}', [AttachmentController::class, 'show']);
+                Route::post('/store-attachment', [AttachmentController::class, 'store']);
+                Route::post('/update-attachment/{attachment}', [AttachmentController::class, 'update']);
+                Route::delete('/attachment/{attachment}', [AttachmentController::class, 'destroy']);
+                // Session routes
+                Route::get('/sessions', [SessionController::class, 'index']);
+                Route::get('/session/{session}', [SessionController::class, 'show']);
+                Route::post('/store-session', [SessionController::class, 'store']);
+                Route::post('/update-session/{session}', [SessionController::class, 'update']);
+                Route::delete('/session/{session}', [SessionController::class, 'destroy']);
 
-        // Payment routes
-        Route::get('/payments', [PaymentController::class, 'index']);
-        Route::get('/payment/{payment}', [PaymentController::class, 'show']);
-        Route::post('/store-payment', [PaymentController::class, 'store']);
-        Route::post('/update-payment/{payment}', [PaymentController::class, 'update']);
-        Route::delete('/payment/{payment}', [PaymentController::class, 'destroy']);
+                // Payment routes
+                Route::get('/payments', [PaymentController::class, 'index']);
+                Route::get('/payment/{payment}', [PaymentController::class, 'show']);
+                Route::post('/store-payment', [PaymentController::class, 'store']);
+                Route::post('/update-payment/{payment}', [PaymentController::class, 'update']);
+                Route::delete('/payment/{payment}', [PaymentController::class, 'destroy']);
 
-        // case expenses routes
-        Route::get('/case-expenses', [CaseExpenseController::class, 'index']);
-        Route::get('/case-expenses/{expense}', [CaseExpenseController::class, 'show']);
-        Route::post('/store-expense', [CaseExpenseController::class, 'store']);
-        Route::post('/update-expense/{expense}', [CaseExpenseController::class, 'update']);
-        Route::delete('/expense/{expense}', [CaseExpenseController::class, 'destroy']);
+                // case expenses routes
+                Route::get('/case-expenses', [CaseExpenseController::class, 'index']);
+                Route::get('/case-expenses/{expense}', [CaseExpenseController::class, 'show']);
+                Route::post('/store-expense', [CaseExpenseController::class, 'store']);
+                Route::post('/update-expense/{expense}', [CaseExpenseController::class, 'update']);
+                Route::delete('/expense/{expense}', [CaseExpenseController::class, 'destroy']);
 
-});
-});
+            });
+      });
 
 
         //getting routes
@@ -111,13 +112,16 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::get('/home', [HomeController::class, 'index']);
         Route::get('/session-dates', [HomeController::class, 'sessionDates']);
 
-});
+   });
 Route::prefix('/admin')->group(function () {
     Route::post('/register', [AdminsAuthController::class, 'register']);
     Route::post('/login', [AdminsAuthController::class, 'login']);
 });
 
-Route::prefix('/admin')->middleware('auth:admin')->group(function () {
+Route::prefix('/admin')->middleware('auth.admin')->group(function () {
+
+    Route::post('/assignRole', [AdminsAuthController::class, 'assignRole']);
+
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('/offices', [DashboardController::class, 'loadOffices'])->name('offices.index');
     Route::get('/offices/{id}', [DashboardController::class, 'loadOffice'])->name('offices.show');
@@ -157,4 +161,7 @@ Route::prefix('/admin')->middleware('auth:admin')->group(function () {
     Route::post('/logout', [AdminsAuthController::class, 'logout']);
 
 });
-    // Admin routes
+Route::middleware('auth.assistant')->group(function () {
+    // Assistant routes
+
+});

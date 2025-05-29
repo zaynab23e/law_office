@@ -24,6 +24,7 @@ class store extends FormRequest
         return [
             'email'    => 'required|email|unique:admins,email',
             'password' => 'required|string|min:8',
+            'role'   => 'required|string|in:admin,Sub-admin,Assistant', // Allowed roles
         ];
     }
 }

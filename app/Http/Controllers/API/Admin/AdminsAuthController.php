@@ -33,8 +33,17 @@ class AdminsAuthController extends Controller
     // Register new admin (only if no admin exists)
     public function register(store $request)
     {
-        if (Admin::count() > 0) {
-            return response()->json(['message' => 'An admin is already registered.'], 403);
+        $validated = $request->validated();
+
+        // Check if you're assigning admin and if one already exists
+        if ($validated['role'] === 'admin') {
+            $existingAdmin = Admin::where('role', 'admin')->exists();
+
+            if ($existingAdmin) {
+                return response()->json([
+                    'message' => 'Only one admin is allowed.',
+                ], 403);
+            }
         }
 
         $admin = Admin::create($request->validated());
@@ -44,6 +53,36 @@ class AdminsAuthController extends Controller
             'token' => $admin->createToken('admin-token')->plainTextToken,
         ], 201);
     }
+
+
+
+
+    public function assignRole(store $request)
+    {
+
+        $validated = $request->validated();
+
+        // Check if you're assigning Sub-admin and if one already exists
+        if ($validated['role'] === 'Sub-admin') {
+            $existingSubadmin = Admin::where('role', 'Sub-admin')->exists();
+
+            if ($existingSubadmin) {
+                return response()->json([
+                    'message' => 'Only one Sub-admin is allowed.',
+                ], 403);
+            }
+        }
+
+        $admin = Admin::create($request->validated());
+
+        return response()->json([
+            'admin' => $admin,
+            'token' => $admin->createToken('admin-token')->plainTextToken,
+        ], 201);
+    }
+
+
+
 
     // Admin logout
     public function logout(Request $request)

@@ -12,7 +12,7 @@ class SubAdminMiddleware
     {
         $admin = Auth::guard('admin')->user();
 
-        if (!$admin || $admin->role !== 'subAdmin') {
+        if (!$admin || $admin->role !== 'Sub-admin') {
             return response()->json(['message' => 'Unauthorized: Sub Assistant only'], 403);
         }
 

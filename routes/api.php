@@ -88,7 +88,7 @@ Route::group(['middleware' => 'auth:sanctum'], function ()
                 Route::delete('/expense/{expense}', [CaseExpenseController::class, 'destroy']);
 
             });
-      });
+        });
 
 
         //getting routes
@@ -113,15 +113,16 @@ Route::group(['middleware' => 'auth:sanctum'], function ()
         Route::get('/home', [HomeController::class, 'index']);
         Route::get('/session-dates', [HomeController::class, 'sessionDates']);
 
-  });
+});
 Route::prefix('/admin')->group(function () {
     Route::post('/register', [AdminsAuthController::class, 'register']);
     Route::post('/login', [AdminsAuthController::class, 'login']);
 });
 
+
+
+
 Route::prefix('/admin')->middleware('auth.admin')->group(function () {
-
-
 
     Route::post('/assignRole', [AdminsAuthController::class, 'assignRole']);
 
@@ -132,11 +133,9 @@ Route::prefix('/admin')->middleware('auth.admin')->group(function () {
     Route::post('/offices/approve/{id}', [DashboardController::class, 'approveUser'])->name('offices.approve');
     Route::delete('/offices/reject/{id}', [DashboardController::class, 'rejectUser'])->name('offices.reject');
 
-
-
     #Attachments
     Route::get('/attachments', [AdminAttachmentController::class, 'attachment'])->name('offices.attachments');
-    Route::post('/attachments/store', [AdminAttachmentController::class, 'store'])->name('offices.attachments.store');
+    // Route::post('/attachments/store', [AdminAttachmentController::class, 'store'])->name('offices.attachments.store');
     Route::get('/attachments/{id}', [AdminAttachmentController::class, 'show'])->name('offices.attachments.show');  
     Route::post('/attachments/{id}', [AdminAttachmentController::class, 'update'])->name('offices.attachments.update');
     Route::delete('/attachments/{id}', [AdminAttachmentController::class, 'destroy'])->name('offices.attachments.destroy');
@@ -161,24 +160,25 @@ Route::prefix('/admin')->middleware('auth.admin')->group(function () {
     Route::get('/sessions/{id}', [AdminSessionController::class, 'showSession'])->name('offices.sessions.show');
     Route::post('/sessions/{id}', [AdminSessionController::class, 'updateSession'])->name('offices.sessions.update');
     Route::delete('/sessions/{id}', [AdminSessionController::class, 'deleteSession'])->name('offices.sessions.destroy');
+
     Route::post('/logout', [AdminsAuthController::class, 'logout']);
 
 });
 
-// Admin routes
-    Route::prefix('/admin')->middleware('sub.admin')->group(function () {
+//     // Admin routes
+Route::prefix('/admin')->middleware(['sub.admin','auth.admin'])->group(function () {
     Route::post('/expenses/store', [AdminExpensesController::class, 'store']);
     Route::post('/attachments/store', [AdminAttachmentController::class, 'store']);
     Route::post('/sessions/store', [AdminSessionController::class, 'storeSession']);
     Route::post('/issue/store', [AdminIssueController::class, 'store']);
+
 });
 
-// Route::prefix('/admin')->middleware(['sub.admin','auth.admin'])->group(function () {
-//     Route::post('/expenses/store', [AdminExpensesController::class, 'store']);
-//     Route::post('/attachments/store', [AdminAttachmentController::class, 'store']);
-//     Route::post('/sessions/store', [AdminSessionController::class, 'storeSession']);
-//     Route::post('/issue/store', [AdminIssueController::class, 'store']);
+
+
+
+// Route::middleware('auth.assistant')->group(function () {
+//     // Assistant routes
 
 // });
-
 

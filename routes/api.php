@@ -142,7 +142,7 @@ Route::prefix('/admin')->middleware('auth.admin')->group(function () {
 
     #Issues
     Route::get('/issue', [AdminIssueController::class, 'issue'])->name('offices.issue');
-    Route::post('/issue/store', [AdminIssueController::class, 'store'])->name('offices.issue.store');
+    // Route::post('/issue/store', [AdminIssueController::class, 'store'])->name('offices.issue.store');
     Route::get('/issue/{id}', [AdminIssueController::class, 'show'])->name('offices.issue.show');
     Route::post('/issue/{id}', [AdminIssueController::class, 'update'])->name('offices.issue.update');
     Route::delete('/issue/{id}', [AdminIssueController::class, 'delete'])->name('offices.issue.destroy');

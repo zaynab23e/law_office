@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Issue extends Model
 {
     use HasFactory;
-    protected $fillable = [
+    protected $fillable = 
+    [
     'customer_id',
     'opponent_name',
     'opponent_type',
@@ -25,12 +26,15 @@ class Issue extends Model
     'register_date',
     'judge_name',
     'contract_price',
-    'paid_fees',            // أضف هذا
+    'paid_fees',         // أضف هذا
     'remaining_fees',       // وأضف هذا
     'notes',
     'case_category_id',
-];
-
+    'visible_to_roles', // أضف هذا
+    ];
+    protected $casts = [
+        'visible_to_roles' => 'array',
+    ];
     public function customer()
     {
         return $this->belongsTo(Customer::class);
@@ -56,4 +60,8 @@ class Issue extends Model
     {
         return $this->hasMany(CaseExpense::class, 'case_id');
     }
-}
+    public function getVisibleToRolesAttribute($value)
+    {
+        return $value ?: ['admin', 'Sub-admin', 'Assistant'];
+    }
+}    

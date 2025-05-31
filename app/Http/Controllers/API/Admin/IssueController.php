@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Issue;
 use App\Models\Customer;
 use App\Models\CaseCategory;
+use Illuminate\Support\Facades\Auth;
 
 class IssueController extends Controller
 {
@@ -43,6 +44,7 @@ public function issue()
     /**
      * حفظ القضية الجديدة في قاعدة البيانات
      */
+    
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -128,9 +130,40 @@ public function issue()
      */
     public function show($id)
     {
-        $issue = Issue::with(['customer', 'category', 'expenses'])
-                    ->findOrFail($id);
-                    
+        $user = Auth::guard('admin')->user();
+
+        // Find the issue or return 404 if not found
+        $issue = Issue::with(['customer', 'category', 'expenses'])->findOrFail($id);
+
+        // Check visibility
+        $visibleRoles = $issue->visible_to_roles ?? [];
+
+        // Ensure it's an array (in case null from DB)
+        if (!is_array($visibleRoles)) {
+            $visibleRoles = json_decode($visibleRoles, true) ?? [];
+        }
+
+        // Check if user is allowed
+        if (!in_array($user->role, $visibleRoles)) {
+            return response()->json([
+                'message' => 'You are not authorized to view this issue.'
+            ], 403);
+        }
+
         return response()->json($issue);
     }
+
+    public function updateVisibility(Request $request, string $issue)
+    {
+        $issue = Issue::findOrFail($issue);
+        $request->validate([
+            'visible_to_roles' => 'required|array',
+            'visible_to_roles.*' => 'in:admin,Sub-admin,Assistant'
+        ]);
+        $issue->visible_to_roles = $request->visible_to_roles;
+        $issue->save();
+
+        return response()->json(['message' => 'Visibility updated.']);
+    }
+
 }

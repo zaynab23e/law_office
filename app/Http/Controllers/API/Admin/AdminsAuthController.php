@@ -59,6 +59,7 @@ class AdminsAuthController extends Controller
 
     public function assignRole(store $request)
     {
+
         $validated = $request->validated();
 
         // Check if you're assigning Sub-admin and if one already exists

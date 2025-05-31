@@ -18,6 +18,10 @@ class Admin extends Authenticatable
         'password',
         'remember_token',
     ];
+    public function notes()
+    {
+        return $this->hasMany(Notes::class, 'admin_id');
+    }
     public function setPasswordAttribute($value)
     {
         $this->attributes['password'] = Hash::make($value);

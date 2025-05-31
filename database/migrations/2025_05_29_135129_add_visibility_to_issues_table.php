@@ -11,12 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('admins', function (Blueprint $table) {
-            $table->id();
-            $table->string('email')->unique();
-            $table->string('password');
-            $table->string('role')->default('subAdmin'); 
-            $table->timestamps();
+        Schema::table('issues', function (Blueprint $table) {
+           $table->json('visible_to_roles')->nullable(); // example: ["admin", "subadmin"]
         });
     }
 
@@ -25,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('admins');
+        Schema::table('issues', function (Blueprint $table) {
+            $table->dropColumn('visible_to_roles');
+        });
     }
 };

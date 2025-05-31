@@ -135,7 +135,7 @@ Route::prefix('/admin')->middleware('auth.admin')->group(function () {
 
     #Attachments
     Route::get('/attachments', [AdminAttachmentController::class, 'attachment'])->name('offices.attachments');
-    // Route::post('/attachments/store', [AdminAttachmentController::class, 'store'])->name('offices.attachments.store');
+    Route::post('/attachments/store', [AdminAttachmentController::class, 'store'])->name('offices.attachments.store');
     Route::get('/attachments/{id}', [AdminAttachmentController::class, 'show'])->name('offices.attachments.show');  
     Route::post('/attachments/{id}', [AdminAttachmentController::class, 'update'])->name('offices.attachments.update');
     Route::delete('/attachments/{id}', [AdminAttachmentController::class, 'destroy'])->name('offices.attachments.destroy');

@@ -114,20 +114,9 @@ Route::group(['middleware' => 'auth:sanctum'], function ()
         Route::get('/home', [HomeController::class, 'index']);
         Route::get('/session-dates', [HomeController::class, 'sessionDates']);
 
-<<<<<<< HEAD
-
-});
-
-Route::prefix('/admin')->group(function () {
-
-});
-Route::prefix('/admin')->group(function () {
-
-=======
   });
 
   Route::prefix('/admin')->group(function () {
->>>>>>> e77a938fa359e4f77ae76cf52812f461f73efdea
     Route::post('/register', [AdminsAuthController::class, 'register']);
     Route::post('/login', [AdminsAuthController::class, 'login']);
 });
@@ -172,21 +161,9 @@ Route::prefix('/admin')->middleware('auth.admin')->group(function () {
     Route::delete('/attachments/{id}', [AdminAttachmentController::class, 'destroy'])->name('offices.attachments.destroy');
 
     #Issues
-<<<<<<< HEAD
-
-    // Route::get('/issue', [AdminIssueController::class, 'issue'])->name('offices.issue');
-    Route::post('/issue/store', [AdminIssueController::class, 'store'])->name('offices.issue.store');
-    // Route::get('/issue/{id}', [AdminIssueController::class, 'show'])->name('offices.issue.show');
-
-    Route::get('/issue', [AdminIssueController::class, 'issue'])->name('offices.issue');
-    // Route::post('/issue/store', [AdminIssueController::class, 'store'])->name('offices.issue.store');
-    Route::get('/issue/{id}', [AdminIssueController::class, 'show'])->name('offices.issue.show');
-
-=======
     // Route::get('/issue', [AdminIssueController::class, 'issue'])->name('offices.issue');
     // Route::post('/issue/store', [AdminIssueController::class, 'store'])->name('offices.issue.store');
     // Route::get('/issue/{id}', [AdminIssueController::class, 'show'])->name('offices.issue.show');
->>>>>>> e77a938fa359e4f77ae76cf52812f461f73efdea
     Route::post('/issue/{id}', [AdminIssueController::class, 'update'])->name('offices.issue.update');
     Route::delete('/issue/{id}', [AdminIssueController::class, 'delete'])->name('offices.issue.destroy');
     Route::patch('/issue/{id}/visibility', [AdminIssueController::class, 'updateVisibility']);
@@ -209,26 +186,3 @@ Route::prefix('/admin')->middleware('auth.admin')->group(function () {
     Route::post('/logout', [AdminsAuthController::class, 'logout']);
 
 });
-<<<<<<< HEAD
-
-
-//     // Admin routes
-
-
-Route::prefix('/admin')->middleware('role:admin,Sub-admin')->group(function () {
-    Route::post('/expenses/store', [AdminExpensesController::class, 'store']);
-    Route::post('/attachments/store', [AdminAttachmentController::class, 'store']);
-    Route::post('/sessions/store', [AdminSessionController::class, 'storeSession']);
-    Route::post('/issue/store', [AdminIssueController::class, 'store']);
-});
-
-
-
-// Route::middleware('auth.assistant')->group(function () {
-//     // Assistant routes
-
-// });
-
-
-=======
->>>>>>> e77a938fa359e4f77ae76cf52812f461f73efdea

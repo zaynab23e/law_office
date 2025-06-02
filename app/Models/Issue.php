@@ -60,8 +60,8 @@ class Issue extends Model
     {
         return $this->hasMany(CaseExpense::class, 'case_id');
     }
-    public function getVisibleToRolesAttribute($value)
+    public function setVisibleToRolesAttribute($value)
     {
-        return $value ?: ['admin', 'Sub-admin', 'Assistant'];
+        $this->attributes['visible_to_roles'] = $value ?: ['admin', 'Sub-admin', 'Assistant'];
     }
 }    

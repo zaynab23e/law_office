@@ -11,7 +11,7 @@ class AdminNotesController extends Controller
 {
     public function index()
     {
-        $notes = Notes::with('admin')->get();
+        $notes = Notes::all();
         return response()->json($notes);
     }
 

@@ -22,7 +22,7 @@ class AdminNotesController extends Controller
         ]);
 
         $note = Notes::create([
-            'content' => $request->input('content'),
+            'content' => 'kmkm',
             'admin_id' => Auth::guard('admin')->id(),
         ]);
 

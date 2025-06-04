@@ -12,22 +12,21 @@ class AdminCustomers extends Controller
     //ده العملاء
     public function index()
     {
-        $customers = Customer::all();
+        $customers = Customer::with('cases', 'category')->get();
         return response()->json($customers, 200);
     }
     
 
     public function show(string $id)
     {
-        $customer = Customer::find($id);
+        $customer = Customer::with(['cases', 'category'])->find($id);
 
-        return response()->json($customer, 200);
-        
+        return response()->json($customer->load('cases', 'category'), 200);
     }
- 
+
     public function update(updateCustomerRequest $request, string $id)
     {
-        $customer = Customer::find($id);
+        $customer = Customer::with('cases', 'category')->find($id);
 
         if (!$customer) {
             return response()->json('العميل غير موجود', 404);

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\Admin\AdminCustomers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\Admin\AdminsAuthController;
@@ -22,7 +23,7 @@ use App\Http\Controllers\API\SessionController;
 use App\Http\Controllers\API\PaymentController;
 use App\Http\Controllers\API\GettingController;
 use App\Http\Controllers\API\HomeController;
-
+use App\Models\Customer;
 
 //////////////////////////  User Public Routes  //////////////////////////
 Route::post('/register', [AuthController::class, 'register']);
@@ -141,8 +142,15 @@ Route::prefix('/admin')->middleware('role:admin,Sub-admin')->group(function () {
 Route::prefix('/admin')->middleware('auth.assistant')->group(function () {
     Route::apiResource('/notes', AdminNotesController::class)->only(['store', 'update']);
 });
+
+
 //////////////////  Admin Routes  //////////////////////////
 Route::prefix('/admin')->middleware('auth.admin')->group(function () {
+    
+    Route::get('/customers', [AdminCustomers::class, 'index']);
+    Route::get('/customer/{customer}', [AdminCustomers::class, 'show']);
+    Route::post('/update-customer/{customer}', [AdminCustomers::class, 'update']);
+    Route::delete('/customer/{customer}', [AdminCustomers::class, 'destroy']);
 
     Route::post('/assignRole', [AdminsAuthController::class, 'assignRole']);
 

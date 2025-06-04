@@ -19,9 +19,7 @@ class CustomerController extends Controller
         $customers = $query->get();
         return response()->json($customers, 200);
     }
-    
-
-  
+      
 
     public function store(storeCustomerRequest $request)
     {

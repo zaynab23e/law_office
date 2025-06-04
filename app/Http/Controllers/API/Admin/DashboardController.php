@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Attachment;
 use App\Models\Customer;
 use App\Models\Issue;
 use App\Models\User;
@@ -16,13 +17,25 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $users = User::count();
-        $Sessions = Session::count();
-        $unApprovedUsers = User::where('approved', false)->count();
-        $approvedUsers = User::where('approved', true)->count();
-        $currentMonthUsers = User::whereMonth('created_at', now()->month)->count();
-        $customers = Customer::count();
-        $cases = Issue::count();
+        $sevenDaysAgo = now()->subDays(7);
+
+        $Sessions = Session::where('created_at', '>=', $sevenDaysAgo)->count();
+        $unApprovedCustomers = Customer::whereNotNull('user_id')
+            ->whereHas('user', function ($query) use ($sevenDaysAgo) {
+                $query->where('approved', false)
+                    ->where('created_at', '>=', $sevenDaysAgo);
+            })->count();
+
+        $approvedCustomers = Customer::whereNotNull('user_id')
+            ->whereHas('user', function ($query) use ($sevenDaysAgo) {
+                $query->where('approved', true)
+                    ->where('created_at', '>=', $sevenDaysAgo);
+            })->count();
+        $customers = Customer::where('created_at', '>=', $sevenDaysAgo)->count();
+        $cases = Issue::where('created_at', '>=', $sevenDaysAgo)->count();
+        $expenses = Expense::where('created_at', '>=', $sevenDaysAgo)->count();
+        $attachments = Attachment::where('created_at', '>=', $sevenDaysAgo)->count();
+
 
 
         $dailyUsers = User::selectRaw('DATE(created_at) as date, COUNT(*) as total')
@@ -39,14 +52,14 @@ class DashboardController extends Controller
         }
 
         return response()->json([
-            'users' => $users,
-            'approvedUsers' => $approvedUsers,
-            'unApprovedUsers' => $unApprovedUsers,
-            'currentMonthUsers' => $currentMonthUsers,
             'customers' => $customers,
+            'approvedUsers' => $approvedCustomers,
+            'unApprovedUsers' => $unApprovedCustomers,
+            'Sessions' => $Sessions,
             'cases' => $cases,
+            'expenses' => $expenses,
+            'attachments' => $attachments,
             'last7DaysUsers' => $last7DaysUsers,
-            'Sessions' => $Sessions
         ]);
     }
     public function loadOffices(Request $request)

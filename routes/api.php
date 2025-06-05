@@ -383,5 +383,3 @@ Route::prefix('/admin')->middleware('auth.admin')->group(function () {
 
 
 });
-
-// test if the problem is solved
